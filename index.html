@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sayaaaangggg
+</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Google Fonts: Playfair Display, EB Garamond & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serifTitle: ['"Playfair Display"', 'Georgia', 'serif'],
+                        serifClassic: ['"EB Garamond"', 'Georgia', 'serif'],
+                        sansClean: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        lavenderBg: '#f6f0fd',
+                        paperPurple: '#fbf7fd',
+                        purpleInk: '#2e1065',
+                        purpleMuted: '#6b21a8',
+                        purpleSubtle: '#9333ea',
+                        lavenderBorder: '#e9d5ff',
+                        violetAccent: '#7e22ce',
+                        deepViolet: '#3b0764',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Candle flame flicker animation */
+        @keyframes flameFlicker {
+            0%, 100% { transform: scale(1) rotate(-1deg); filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.9)) drop-shadow(0 0 20px rgba(245, 158, 11, 0.8)); }
+            25% { transform: scale(1.12) rotate(2deg); filter: drop-shadow(0 0 18px rgba(236, 72, 153, 0.95)) drop-shadow(0 0 25px rgba(245, 158, 11, 0.9)); }
+            50% { transform: scale(0.92) rotate(-2deg); filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.7)) drop-shadow(0 0 14px rgba(245, 158, 11, 0.7)); }
+            75% { transform: scale(1.08) rotate(1deg); filter: drop-shadow(0 0 16px rgba(236, 72, 153, 0.85)) drop-shadow(0 0 22px rgba(245, 158, 11, 0.85)); }
+        }
+
+        /* Smoke rising keyframes */
+        @keyframes smokeRise {
+            0% { transform: translateY(0) scale(0.5); opacity: 0.9; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-50px) scale(2.2); opacity: 0; }
+        }
+
+        /* Ambient floating particles */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+
+        .animate-flame {
+            animation: flameFlicker 0.65s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+
+        .animate-smoke {
+            animation: smokeRise 1.8s ease-out forwards;
+        }
+
+        .animate-float {
+            animation: floatSlow 5s ease-in-out infinite;
+        }
+
+        /* Authentic Purple Tinted Paper Sheet Styling */
+        .paper-sheet {
+            background-color: #faf5fd;
+            background-image: radial-gradient(#e9d5ff 0.65px, transparent 0.65px);
+            background-size: 24px 24px;
+            box-shadow: 
+                0 2px 8px rgba(126, 34, 206, 0.04),
+                0 20px 40px -10px rgba(88, 28, 135, 0.12),
+                0 35px 70px -15px rgba(88, 28, 135, 0.16);
+        }
+
+        /* Subtle Lavender Paper Margin Line */
+        .paper-sheet::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 2.25rem;
+            width: 1.5px;
+            background-color: rgba(168, 85, 247, 0.22);
+        }
+
+        @media (min-width: 640px) {
+            .paper-sheet::before {
+                left: 3.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-[#faf5ff] via-[#f3e8ff] to-[#e9d5ff] text-purpleInk font-sansClean min-h-screen relative antialiased selection:bg-purple-200 selection:text-purple-900 overflow-x-hidden">
+
+    <!-- Background Ambient Glows -->
+    <div class="fixed top-8 left-8 w-80 h-80 bg-purple-300/35 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+    <div class="fixed bottom-10 right-10 w-96 h-96 bg-fuchsia-300/25 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-violet-200/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- ================================================================= -->
+    <!-- SCREEN 1: CANDLE BLOWING SCREEN -->
+    <!-- ================================================================= -->
+    <div id="screen1" class="min-h-screen flex flex-col justify-center items-center px-4 py-12 transition-all duration-700 relative z-10">
+        
+        <div class="max-w-md w-full bg-paperPurple/90 backdrop-blur-md rounded-3xl p-8 sm:p-10 text-center border border-purple-200/90 shadow-2xl space-y-6 animate-float">
+            
+            <!-- Header Tag -->
+            <div class="space-y-2">
+                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-purple-100 text-violetAccent text-xs uppercase tracking-widest font-bold border border-purple-200">
+                    Happy Birthday Sayaaaangggg
+                </span>
+                <h1 class="font-serifTitle text-3xl sm:text-4xl font-bold text-purpleInk pt-2">
+                    Untuk <span class="italic text-purpleMuted">Rintan</span> 💜
+                </h1>
+            </div>
+
+            <p id="candleInstruction" class="text-purpleMuted/90 text-xs sm:text-sm leading-relaxed max-w-xs mx-auto font-medium">
+                Make a wish ndisik <br>terus tiup lilin e xixixi
+            </p>
+
+            <!-- AESTHETIC 2D PURPLE CAKE & INTERACTIVE CANDLE -->
+            <div class="relative w-52 h-52 mx-auto flex flex-col items-center justify-end my-2 cursor-pointer group" onclick="blowCandle()" title="Klik untuk meniup lilin!">
+                
+                <!-- Candle Flame & Smoke -->
+                <div class="relative flex flex-col items-center z-20 mb-[-2px]">
+                    <div id="candleSmoke" class="hidden absolute -top-10 w-4 h-4 bg-purple-300/60 rounded-full animate-smoke pointer-events-none"></div>
+                    
+                    <!-- Flame -->
+                    <div id="candleFlame" class="w-4 h-7 bg-gradient-to-t from-pink-500 via-amber-400 to-white rounded-full animate-flame cursor-pointer"></div>
+                    
+                    <!-- Candle Body -->
+                    <div class="w-3 h-11 bg-gradient-to-r from-purple-300 via-purple-200 to-purple-400 rounded-sm border-r border-purple-400/40 shadow-sm relative overflow-hidden">
+                        <div class="w-full h-1 bg-violet-400/30 my-1"></div>
+                        <div class="w-full h-1 bg-violet-400/30 my-1"></div>
+                        <div class="w-full h-1 bg-violet-400/30 my-1"></div>
+                    </div>
+                </div>
+
+                <!-- Cake Upper Layer (Lilac Frosting) -->
+                <div class="w-36 h-11 bg-gradient-to-r from-purple-200 via-fuchsia-100 to-purple-200 rounded-t-2xl border-t-2 border-white/90 shadow-sm relative z-10 flex items-center justify-around px-4">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-400/80 shadow-inner"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-400/80 shadow-inner"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-400/80 shadow-inner"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-400/80 shadow-inner"></span>
+                </div>
+
+                <!-- Cake Middle Decorative Drips -->
+                <div class="w-36 h-3 bg-purple-300/90 rounded-b-lg -mt-1 relative z-10 flex justify-center gap-1.5 overflow-hidden">
+                    <div class="w-3 h-3 bg-purple-200 rounded-full -mt-1"></div>
+                    <div class="w-4 h-4 bg-purple-200 rounded-full -mt-1"></div>
+                    <div class="w-3 h-3 bg-purple-200 rounded-full -mt-1"></div>
+                </div>
+
+                <!-- Cake Base Layer (Lavender Cream) -->
+                <div class="w-48 h-16 bg-gradient-to-b from-purple-300/90 via-purple-200 to-purple-300 rounded-t-xl border-t-2 border-white/80 shadow-md relative flex items-center justify-center -mt-1">
+                    <div class="w-full h-2 bg-white/70 absolute top-3"></div>
+                    <div class="w-full h-1 bg-purple-400/30 absolute top-8"></div>
+                </div>
+
+                <!-- Cake Plate -->
+                <div class="w-56 h-4 bg-gradient-to-r from-purple-100 via-white to-purple-100 rounded-full shadow-md border-t border-purple-200"></div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="pt-2">
+                <button id="blowBtn" onclick="blowCandle()" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-purpleMuted to-violetAccent text-white font-semibold text-xs sm:text-sm tracking-wide shadow-lg shadow-purple-900/25 hover:opacity-95 active:scale-95 transition-all flex items-center justify-center gap-2">
+                    <span>Tiup Lilin</span> 🌬️
+                </button>
+
+                <button id="nextBtn" onclick="goToLetter()" class="hidden w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-violetAccent via-purpleSubtle to-purpleMuted text-white font-bold text-xs sm:text-sm tracking-wide shadow-xl shadow-purple-900/35 hover:opacity-95 active:scale-95 transition-all animate-pulse flex items-center justify-center gap-2">
+                    <span>Buka Surat Spesial Anjayy</span> ✉️
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================================= -->
+    <!-- SCREEN 2: CLASSIC PURPLE PARCHMENT LETTER -->
+    <!-- ================================================================= -->
+    <div id="screen2" class="hidden min-h-screen py-12 px-4 sm:px-6 flex flex-col items-center justify-center opacity-0 transition-opacity duration-700 relative z-10">
+        
+        <!-- Authentic Purple Parchment Paper Container -->
+        <article class="paper-sheet w-full max-w-2xl rounded-lg p-8 sm:p-14 sm:pl-20 border border-purple-200/90 relative overflow-hidden my-auto">
+            
+            <!-- Header Date & Location -->
+            <div class="text-right text-purpleMuted font-serifClassic text-sm sm:text-base mb-8 sm:mb-12 italic border-b border-purple-200/80 pb-3 pr-2 sm:pr-4 font-semibold">
+                Wates, 30 Sept 2026
+            </div>
+
+            <!-- Letter Body Content -->
+            <div class="font-serifClassic text-purpleInk text-base sm:text-lg leading-relaxed space-y-6">
+                
+                <p>
+                    xixi reti raaaa, aku seneng banget lek, seneeenggggg bangett, seneng seneng seneng seneng. Mergo ketemu koeeee.
+                </p>
+
+                <p>
+                    Dino iki bocilku lahirr lekk, tanggal 30, terus metu, setttt oek oeekk. Bumi gonjang-ganjing, awan bergejolak, matahari tersenyum, angin menari, rintan dilahirkan ketika Klaten sedang tersenyum anjayyy. Makasihh ya Allah sudah menciptakan Rintan, makasih juga budhe kartini karo bapak rintan. Untung koe lahir ndul, koe ibarat sebagai anugerah yang datang tiba". Kau bidadari jatuh dari surga di hadapanku. Maaf ya cill sering gawe koe nesu:( salahe lucu og, tapi ojo nesu tenanannnn.
+                </p>
+
+                <p>
+                    Saiki wes 20, tueekk. reti raaa, aku seneng lek nek rungokne koe cerito pas isih cilik. mergo koe nakal. Tapi saiki wes koyo wedok tenan og, tenanan nek iki. Nek koe cerito keluarga mu aku pengen nangis e ndull huhu, udu mergo cerito mu, tapi mergo koe ceritone ro ngguyu e:(, tapi rapopoo kan saiki wes karo aku xixi. Pokoe to cill selama koe ro aku, koe raentuk opo" ngelakoni dewe, meh koe biyen wes biasa dewe, meh koe luwih tuek seko aku, bennn, koe tetep bocil ku xixixiixi
+                </p>
+
+                <p>
+                    saiki wish e. Doa khusus ultahmu mung 1 cill, mergo doa liane tak doake terus xixi. Semoga rintan tetap menjadi rintan. Terus dadi rintanku yo cill:(, Pokoe tekan umur 30, 40, 50, selamanya tetep ro akuuuuuu. Pokoe awkdwe kudu berkelana menjelajahi Indonesia xixii.
+                </p>
+
+                <p class="font-semibold pt-2 text-violetAccent">
+                    Happy birthday sayaangggg
+                </p>
+
+            </div>
+
+            <!-- Closing & Signature -->
+            <div class="mt-12 sm:mt-16 pt-6 border-t border-purple-200/80 font-serifClassic text-right space-y-1">
+                <p class="text-purpleMuted text-sm italic">Seko bojomu,</p>
+                <p class="font-bold text-lg sm:text-xl text-purpleInk pt-1">
+                    Fachry Hibatullah
+                </p>
+            </div>
+
+            <!-- "Ready?" Action Button to Screen 3 -->
+            <div class="mt-12 pt-6 flex justify-center">
+                <button onclick="goToScreen3()" class="py-3.5 px-10 rounded-2xl bg-gradient-to-r from-purpleMuted via-violetAccent to-purpleSubtle text-white font-bold text-sm sm:text-base tracking-wide shadow-xl shadow-purple-900/30 hover:opacity-95 active:scale-95 transition-all flex items-center justify-center gap-2 group">
+                    <span>Ready?</span>
+                    <span class="group-hover:translate-x-1 transition-transform">✨</span>
+                </button>
+            </div>
+
+        </article>
+
+    </div>
+
+
+    <!-- ================================================================= -->
+    <!-- SCREEN 3: COMING SOON -->
+    <!-- ================================================================= -->
+    <div id="screen3" class="hidden min-h-screen flex items-center justify-center px-4 py-12 opacity-0 transition-opacity duration-700 relative z-10 text-center">
+        <h1 class="font-serifTitle text-4xl sm:text-6xl font-bold text-purpleInk tracking-widest uppercase">
+            Coming Soon
+        </h1>
+    </div>
+
+
+    <!-- ================================================================= -->
+    <!-- JAVASCRIPT LOGIC & AUDIO SYNTHESIS -->
+    <!-- ================================================================= -->
+    <script>
+        let isBlown = false;
+
+        // Web Audio API Synth for sound effects
+        function playChimeSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                notes.forEach((freq, index) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, ctx.currentTime + index * 0.12);
+                    gain.gain.setValueAtTime(0.12, ctx.currentTime + index * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + index * 0.12 + 0.8);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + index * 0.12);
+                    osc.stop(ctx.currentTime + index * 0.12 + 0.8);
+                });
+            } catch (e) {
+                console.log("Audio not allowed or supported");
+            }
+        }
+
+        // 1. Blow Candle Handler
+        function blowCandle() {
+            if (isBlown) return;
+
+            const flame = document.getElementById('candleFlame');
+            const smoke = document.getElementById('candleSmoke');
+
+            flame.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            flame.style.opacity = '0';
+            flame.style.transform = 'scale(0)';
+
+            smoke.classList.remove('hidden');
+
+            setTimeout(() => {
+                isBlown = true;
+                
+                // Play celebratory chime sound
+                playChimeSound();
+
+                // Trigger Purple Theme Confetti Burst
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 80,
+                        spread: 80,
+                        origin: { y: 0.6 },
+                        colors: ['#7e22ce', '#a855f7', '#c084fc', '#e9d5ff', '#fbbf24', '#f472b6']
+                    });
+
+                    setTimeout(() => {
+                        confetti({
+                            particleCount: 45,
+                            angle: 60,
+                            spread: 55,
+                            origin: { x: 0 },
+                            colors: ['#7e22ce', '#a855f7', '#fbbf24']
+                        });
+                        confetti({
+                            particleCount: 45,
+                            angle: 120,
+                            spread: 55,
+                            origin: { x: 1 },
+                            colors: ['#7e22ce', '#c084fc', '#f472b6']
+                        });
+                    }, 250);
+                }
+
+                document.getElementById('candleInstruction').innerHTML = "anjaaayyyy <br>woco surat e yakk";
+                document.getElementById('blowBtn').classList.add('hidden');
+                document.getElementById('nextBtn').classList.remove('hidden');
+            }, 600);
+        }
+
+        // 2. Switch from Screen 1 to Screen 2
+        function goToLetter() {
+            const screen1 = document.getElementById('screen1');
+            const screen2 = document.getElementById('screen2');
+
+            playChimeSound();
+
+            screen1.classList.add('opacity-0');
+
+            setTimeout(() => {
+                screen1.classList.add('hidden');
+                screen2.classList.remove('hidden');
+
+                setTimeout(() => {
+                    screen2.classList.remove('opacity-0');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 50);
+
+            }, 700);
+        }
+
+        // 3. Switch from Screen 2 to Screen 3 (Coming Soon)
+        function goToScreen3() {
+            const screen2 = document.getElementById('screen2');
+            const screen3 = document.getElementById('screen3');
+
+            playChimeSound();
+
+            screen2.classList.add('opacity-0');
+
+            setTimeout(() => {
+                screen2.classList.add('hidden');
+                screen3.classList.remove('hidden');
+
+                setTimeout(() => {
+                    screen3.classList.remove('opacity-0');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 50);
+
+            }, 700);
+        }
+    </script>
+</body>
+</html>
